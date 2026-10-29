@@ -19,100 +19,104 @@
         ?>
 
         <main class="main-content">
-            <header class="page-header">
-                <h2>Sistem Kasir (POS)</h2>
+            <header class="page-header" style="margin-bottom: 15px;">
+                <h2 style="margin: 0;">Sistem Kasir (POS)</h2>
             </header>
 
             <div class="dashboard-content">
-                <div class="pos-container">
-                    <div class="product-list">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h3 style="margin: 0;">Pilih Produk</h3>
-                        </div>
-
-                        
-                        <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; background: #fafafa; padding: 12px; border-radius: 8px; border: 1px solid #eee;">
-                            <div style="flex: 1; min-width: 140px;">
-                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: #555;">Kategori Produk</label>
-                                <select v-model="filterKategori" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; outline: none; background: #fff; font-size: 0.85rem;">
-                                    <option value="Semua">Semua Kategori</option>
-                                    <option v-for="kat in daftarKategori" :key="kat" :value="kat">{{ kat }}</option>
-                                </select>
-                            </div>
-                            <div style="flex: 1; min-width: 120px;">
-                                <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: #555;">Ukuran Baju</label>
-                                <select v-model="filterUkuran" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; outline: none; background: #fff; font-size: 0.85rem;">
-                                    <option value="Semua">Semua Ukuran</option>
-                                    <option v-for="uk in daftarUkuran" :key="uk" :value="uk">{{ uk }}</option>
-                                </select>
-                            </div>
-                            <div style="display: flex; align-items: flex-end;">
-                                <button type="button" @click="resetFilter" style="padding: 8px 12px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; color: #334155;">
-                                    <i class="fas fa-undo"></i> Reset
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="product-grid">
-                            <div class="product-card" 
-                                 v-for="item in inventarisTersaring" :key="item.kode" 
-                                 :class="{ habis: item.stok === 0 }"
-                                 @click="tambahKeKeranjang(item)">
-                                <div style="display: flex; gap: 5px; margin-bottom: 6px; flex-wrap: wrap;">
-                                    <span style="font-size: 0.7rem; background-color: #f5f5f5; border: 1px solid #ddd; padding: 2px 6px; border-radius: 4px; color: #555;">
-                                        {{ item.kategori || '-' }}
-                                    </span>
-                                    <span style="font-size: 0.7rem; background-color: #eef2ff; border: 1px solid #c7d2fe; padding: 2px 6px; border-radius: 4px; color: #3730a3; font-weight: 600;">
-                                        {{ item.ukuran || 'All Size' }}
-                                    </span>
+                <div class="pos-container" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: start;">
+                    
+                    <div class="product-list" style="display: flex; flex-direction: column; height: calc(100vh - 170px); padding: 15px; border-radius: 12px; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                        <div style="flex-shrink: 0; margin-bottom: 15px;">
+                            <h3 style="margin: 0; margin-bottom: 10px;">Pilih Produk</h3>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap; background: #fafafa; padding: 12px; border-radius: 8px; border: 1px solid #eee;">
+                                <div style="flex: 1; min-width: 140px;">
+                                    <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: #555;">Kategori Produk</label>
+                                    <select v-model="filterKategori" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; outline: none; background: #fff; font-size: 0.85rem;">
+                                        <option value="Semua">Semua Kategori</option>
+                                        <option v-for="kat in daftarKategori" :key="kat" :value="kat">{{ kat }}</option>
+                                    </select>
                                 </div>
-                                <h4 style="font-size: 0.95rem; margin-bottom: 5px;">{{ item.nama }}</h4>
-                                <p style="font-size: 0.8rem; color: #888;">Stok: {{ item.stok }}</p>
-                                <p style="color: #c0a080; font-weight: bold; margin-top: 5px;">Rp {{ item.harga.toLocaleString('id-ID') }}</p>
+                                <div style="flex: 1; min-width: 120px;">
+                                    <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: #555;">Ukuran Baju</label>
+                                    <select v-model="filterUkuran" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; outline: none; background: #fff; font-size: 0.85rem;">
+                                        <option value="Semua">Semua Ukuran</option>
+                                        <option v-for="uk in daftarUkuran" :key="uk" :value="uk">{{ uk }}</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; align-items: flex-end;">
+                                    <button type="button" @click="resetFilter" style="padding: 8px 12px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; color: #334155;">
+                                        <i class="fas fa-undo"></i> Reset
+                                    </button>
+                                </div>
                             </div>
-                            <div v-if="inventarisTersaring.length === 0" style="grid-column: 1 / -1; text-align: center; color: #888; padding: 30px;">
-                                Tidak ada produk yang sesuai dengan filter Kategori atau Ukuran.
+                        </div>
+
+                        <div style="flex: 1; overflow-y: auto; padding-right: 5px; min-height: 0;">
+                            <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; align-items: start;">
+                                <div class="product-card" 
+                                     v-for="item in inventarisTersaring" :key="item.kode" 
+                                     :class="{ habis: item.stok === 0 }"
+                                     @click="tambahKeKeranjang(item)"
+                                     style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; background: #fff; transition: all 0.2s;">
+                                    <div style="display: flex; justify-content: center; gap: 5px; margin-bottom: 8px; flex-wrap: wrap;">
+                                        <span style="font-size: 0.7rem; background-color: #f5f5f5; border: 1px solid #ddd; padding: 2px 6px; border-radius: 4px; color: #555;">
+                                            {{ item.kategori || '-' }}
+                                        </span>
+                                        <span style="font-size: 0.7rem; background-color: #eef2ff; border: 1px solid #c7d2fe; padding: 2px 6px; border-radius: 4px; color: #3730a3; font-weight: 600;">
+                                            {{ item.ukuran || 'All Size' }}
+                                        </span>
+                                    </div>
+                                    <h4 style="font-size: 0.95rem; margin-bottom: 5px; color: #333;">{{ item.nama }}</h4>
+                                    <p style="font-size: 0.8rem; color: #888;">Stok: {{ item.stok }}</p>
+                                    <p style="color: #c0a080; font-weight: bold; margin-top: 5px; font-size: 1.05rem;">Rp {{ item.harga.toLocaleString('id-ID') }}</p>
+                                </div>
+                                <div v-if="inventarisTersaring.length === 0" style="grid-column: 1 / -1; text-align: center; color: #888; padding: 30px;">
+                                    Tidak ada produk yang sesuai dengan filter Kategori atau Ukuran.
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="cart-section">
-                        <h3 style="margin-bottom: 15px;">Keranjang Belanja</h3>
-                        <div class="cart-items">
+                    <div class="cart-section" style="display: flex; flex-direction: column; height: calc(100vh - 170px); border-radius: 12px; background: #fff; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                        <h3 style="margin-bottom: 15px; flex-shrink: 0;">Keranjang Belanja</h3>
+                        <div class="cart-items" style="flex: 1; overflow-y: auto; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-right: 5px; min-height: 0;">
                             <div v-if="keranjang.length === 0" style="text-align: center; color: #888; padding: 20px;">
                                 Belum ada produk yang dipilih
                             </div>
-                            <div class="cart-item" v-for="(item, index) in keranjang" :key="index">
+                            <div class="cart-item" v-for="(item, index) in keranjang" :key="index" style="background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 12px; margin-bottom: 10px;">
                                 <div class="cart-item-info">
-                                    <h4 style="margin-bottom: 3px;">{{ item.nama }}</h4>
-                                    <div style="font-size: 0.75rem; color: #777; margin-bottom: 6px;">
+                                    <h4 style="margin-bottom: 4px; font-size: 0.95rem;">{{ item.nama }}</h4>
+                                    <div style="font-size: 0.75rem; color: #777; margin-bottom: 8px;">
                                         <span>{{ item.kategori || '-' }}</span> | <strong style="color: #3730a3;">{{ item.ukuran || 'All Size' }}</strong>
                                     </div>
                                     <div style="display: flex; align-items: center; gap: 8px;">
-                                        <input type="number" v-model.number="item.qty" @change="cekStok(item)" min="1" :max="item.stok" style="width: 60px; padding: 5px; border: 1px solid #c0a080; border-radius: 4px; text-align: center; font-weight: bold; outline: none;">
-                                        <span style="font-size: 0.85rem; color: #666;">@ Rp {{ item.harga.toLocaleString('id-ID') }}</span>
+                                        <input type="number" v-model.number="item.qty" @change="cekStok(item)" min="1" :max="item.stok" style="width: 60px; padding: 6px; border: 1px solid #c0a080; border-radius: 6px; text-align: center; font-weight: bold; outline: none;">
+                                        <span style="font-size: 0.85rem; color: #666; font-weight: 500;">@ Rp {{ item.harga.toLocaleString('id-ID') }}</span>
                                     </div>
                                 </div>
-                                <div style="text-align: right;">
-                                    <strong>Rp {{ (item.qty * item.harga).toLocaleString('id-ID') }}</strong><br>
-                                    <button @click="hapusDariKeranjang(index)" style="background: none; border: none; color: #d9534f; cursor: pointer; font-size: 0.8rem; margin-top: 5px;">Hapus</button>
+                                <div style="text-align: right; display: flex; flex-direction: column; justify-content: center; align-items: flex-end;">
+                                    <strong style="color: #2e7d32; font-size: 1.05rem;">Rp {{ (item.qty * item.harga).toLocaleString('id-ID') }}</strong>
+                                    <button @click="hapusDariKeranjang(index)" style="background: none; border: none; color: #d9534f; cursor: pointer; font-size: 0.85rem; font-weight: 600; margin-top: 8px; padding: 4px 8px; border-radius: 4px; transition: background 0.2s;">
+                                        <i class="fas fa-trash-alt"></i> Hapus
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="checkout-section">
-                            <div class="checkout-row">
+                        <div class="checkout-section" style="flex-shrink: 0; background-color: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #eee;">
+                            <div class="checkout-row" style="color: #666;">
                                 <span>Subtotal</span>
                                 <span>Rp {{ totalBelanja.toLocaleString('id-ID') }}</span>
                             </div>
-                            <div class="checkout-row total">
+                            <div class="checkout-row total" style="font-size: 1.2rem; font-weight: 700; color: #333; margin-top: 5px; margin-bottom: 15px; border-bottom: 1px dashed #ccc; padding-bottom: 15px;">
                                 <span>Total Tagihan</span>
                                 <span>Rp {{ totalBelanja.toLocaleString('id-ID') }}</span>
                             </div>
                             
-                            <div style="margin-top: 15px;">
-                                <label style="font-size: 0.9rem; font-weight: 500;">Metode Pembayaran</label>
-                                <select v-model="metodePembayaran" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-top: 5px; font-family: inherit; font-size: 1rem; outline: none;">
+                            <div>
+                                <label style="font-size: 0.9rem; font-weight: 600; color: #555;">Metode Pembayaran</label>
+                                <select v-model="metodePembayaran" style="width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; margin-top: 5px; font-family: inherit; font-size: 0.95rem; outline: none; background: #fff;">
                                     <option value="Tunai">Tunai (Cash)</option>
                                     <option value="QRIS">QRIS</option>
                                     <option value="Transfer Bank">Transfer Bank</option>
@@ -124,19 +128,19 @@
                             </div>
 
                             <div style="margin-top: 15px;" v-if="metodePembayaran === 'Tunai'">
-                                <label style="font-size: 0.9rem; font-weight: 500;">Input Tunai Pembeli (Rp)</label>
-                                <input type="number" v-model="uangTunai" class="input-tunai" placeholder="0" min="0">
+                                <label style="font-size: 0.9rem; font-weight: 600; color: #555;">Input Tunai Pembeli (Rp)</label>
+                                <input type="number" v-model="uangTunai" class="input-tunai" style="width: 100%; padding: 10px 12px; margin-top: 5px; border: 1px solid #c0a080; border-radius: 6px; font-size: 1.1rem; text-align: right; font-weight: bold; background: #fff;" placeholder="0" min="0">
                             </div>
 
-                            <div class="checkout-row" style="margin-top: 15px; color: #2e7d32; font-size: 1.1rem;" v-if="metodePembayaran === 'Tunai' && uangTunai > 0">
+                            <div class="checkout-row" style="margin-top: 15px; color: #2e7d32; font-size: 1.1rem; font-weight: 700;" v-if="metodePembayaran === 'Tunai' && uangTunai > 0">
                                 <span>Kembalian</span>
                                 <span>Rp {{ kembalian >= 0 ? kembalian.toLocaleString('id-ID') : 0 }}</span>
                             </div>
 
-                            <button class="btn-action success" style="width: 100%; margin-top: 15px; padding: 12px; font-size: 1.1rem;" 
+                            <button class="btn-action success" style="width: 100%; margin-top: 20px; padding: 14px; font-size: 1.1rem; font-weight: bold; border-radius: 8px; box-shadow: 0 4px 6px rgba(46,125,50,0.2);" 
                                     @click="prosesPembayaran"
                                     :disabled="keranjang.length === 0 || (metodePembayaran === 'Tunai' && uangTunai < totalBelanja)">
-                                <i class="fas fa-check-circle"></i> Selesaikan Pembayaran
+                                <i class="fas fa-check-circle" style="margin-right: 5px;"></i> Selesaikan Pembayaran
                             </button>
                         </div>
                     </div>

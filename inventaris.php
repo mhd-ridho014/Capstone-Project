@@ -9,13 +9,45 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        .dashboard-content {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 150px);
+        }
+        
+        .data-section {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .table-scroll-container {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #fff;
+            position: relative;
+        }
+
+        .table-scroll-container th {
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
         .status.sedang { background-color: #e0f2fe; color: #0284c7; }
         .chip-filter { padding: 8px 16px; border-radius: 8px; border: 1px solid #e0e0e0; background-color: #f2f2f2; color: #555; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; }
         .chip-filter:hover { background-color: #e8e8e8; }
         .chip-filter.active { background-color: #ffffff; border: 2px solid #111111; color: #000000; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     </style>
 </head>
-<body class="dashboard-page">
+<body class="dashboard-page" style="overflow: hidden;">
 
     <div id="app" v-cloak>
         <?php 
@@ -30,7 +62,7 @@
 
             <div class="dashboard-content">
                 <div class="data-section">
-                    <div class="data-section-header" style="flex-wrap: wrap; gap: 15px;">
+                    <div class="data-section-header" style="flex-wrap: wrap; gap: 15px; flex-shrink: 0;">
                         <h3>Monitoring Inventaris</h3>
                         <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
                             <div v-if="barangPeringatan.length > 0" 
@@ -49,7 +81,7 @@
                         </div>
                     </div>
 
-                    <div style="background: #fafafa; padding: 15px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 20px;">
+                    <div style="background: #fafafa; padding: 15px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 15px; flex-shrink: 0;">
                         <div style="margin-bottom: 15px;">
                             <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #333; font-size: 0.9rem;">Waktu Update / Diunggah</label>
                             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
@@ -93,38 +125,40 @@
                         </div>
                     </div>
 
-                   <table>
-                        <thead>
-                            <tr>
-                                <th>Kode Barang</th>
-                                <th>Nama Produk</th>
-                                <th>Kategori</th>
-                                <th>Ukuran</th>
-                                <th>Harga</th>
-                                <th>Sisa Stok</th>
-                                <th>Status</th>
-                                <th style="text-align: center;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="item in inventarisTersaring" :key="item.kode">
-                                <td><strong>{{ item.kode }}</strong></td>
-                                <td>{{ item.nama }}</td>
-                                <td><span style="background-color: #f5f5f5; border: 1px solid #ddd; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; color: #555;">{{ item.kategori || '-' }}</span></td>
-                                <td><span style="background-color: #eef2ff; border: 1px solid #c7d2fe; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; color: #3730a3; font-weight: 600;">{{ item.ukuran || 'All Size' }}</span></td>
-                                <td>Rp {{ item.harga.toLocaleString('id-ID') }}</td>
-                                <td><strong>{{ item.stok }}</strong></td>
-                                <td><span class="status" :class="getStatusClass(item.stok)">{{ getStatusText(item.stok) }}</span></td>
-                                <td style="text-align: center;">
-                                    <button @click="bukaEditModal(item)" style="background: none; border: none; color: #f39c12; cursor: pointer; font-size: 1rem; margin-right: 15px;" title="Edit Stok & Barang"><i class="fas fa-edit"></i></button>
-                                    <button @click="hapusBarang(item.kode)" style="background: none; border: none; color: #d9534f; cursor: pointer; font-size: 1rem;" title="Hapus Barang"><i class="fas fa-trash-alt"></i></button>
-                                </td>
-                            </tr>
-                            <tr v-if="inventarisTersaring.length === 0">
-                                <td colspan="8" style="text-align: center; color: #888; padding: 20px;">Tidak ada barang yang sesuai dengan filter.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-scroll-container">
+                       <table style="margin: 0; box-shadow: none;">
+                            <thead>
+                                <tr>
+                                    <th>Kode Barang</th>
+                                    <th>Nama Produk</th>
+                                    <th>Kategori</th>
+                                    <th>Ukuran</th>
+                                    <th>Harga</th>
+                                    <th>Sisa Stok</th>
+                                    <th>Status</th>
+                                    <th style="text-align: center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in inventarisTersaring" :key="item.kode">
+                                    <td><strong>{{ item.kode }}</strong></td>
+                                    <td>{{ item.nama }}</td>
+                                    <td><span style="background-color: #f5f5f5; border: 1px solid #ddd; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; color: #555;">{{ item.kategori || '-' }}</span></td>
+                                    <td><span style="background-color: #eef2ff; border: 1px solid #c7d2fe; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; color: #3730a3; font-weight: 600;">{{ item.ukuran || 'All Size' }}</span></td>
+                                    <td>Rp {{ item.harga.toLocaleString('id-ID') }}</td>
+                                    <td><strong>{{ item.stok }}</strong></td>
+                                    <td><span class="status" :class="getStatusClass(item.stok)">{{ getStatusText(item.stok) }}</span></td>
+                                    <td style="text-align: center;">
+                                        <button @click="bukaEditModal(item)" style="background: none; border: none; color: #f39c12; cursor: pointer; font-size: 1rem; margin-right: 15px;" title="Edit Stok & Barang"><i class="fas fa-edit"></i></button>
+                                        <button @click="hapusBarang(item.kode)" style="background: none; border: none; color: #d9534f; cursor: pointer; font-size: 1rem;" title="Hapus Barang"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                <tr v-if="inventarisTersaring.length === 0">
+                                    <td colspan="8" style="text-align: center; color: #888; padding: 20px;">Tidak ada barang yang sesuai dengan filter.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>

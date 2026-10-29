@@ -101,33 +101,35 @@
                             </button>
                         </div>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tanggal & Waktu</th>
-                                <th>No. Referensi</th>
-                                <th>Produk Terjual</th>
-                                <th>Total Nilai</th>
-                                <th style="text-align: center;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="laporan in laporanHarian" :key="laporan.ref">
-                                <td>{{ laporan.tanggal }}</td>
-                                <td>{{ laporan.ref }}</td>
-                                <td style="line-height: 1.6;">{{ formatRincian(laporan.produk) }}</td>
-                                <td>Rp {{ laporan.total.toLocaleString('id-ID') }}</td>
-                                <td style="text-align: center;">
-                                    <button @click="cetakUlang(laporan)" style="background: none; border: none; color: #333; cursor: pointer; font-size: 1.1rem;" title="Cetak Ulang Struk">
-                                        <i class="fas fa-print"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr v-if="laporanHarian.length === 0">
-                                <td colspan="5" style="text-align: center; color: #888; padding: 20px;">Tidak ada data penjualan pada rentang tanggal ini.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-scroll-container">
+                        <table style="margin: 0; box-shadow: none;">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal & Waktu</th>
+                                    <th>No. Referensi</th>
+                                    <th>Produk Terjual</th>
+                                    <th>Total Nilai</th>
+                                    <th style="text-align: center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="laporan in laporanHarian" :key="laporan.ref">
+                                    <td>{{ laporan.tanggal }}</td>
+                                    <td>{{ laporan.ref }}</td>
+                                    <td style="line-height: 1.6;">{{ formatRincian(laporan.produk) }}</td>
+                                    <td>Rp {{ laporan.total.toLocaleString('id-ID') }}</td>
+                                    <td style="text-align: center;">
+                                        <button @click="cetakUlang(laporan)" style="background: none; border: none; color: #333; cursor: pointer; font-size: 1.1rem;" title="Cetak Ulang Struk">
+                                            <i class="fas fa-print"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr v-if="laporanHarian.length === 0">
+                                    <td colspan="5" style="text-align: center; color: #888; padding: 20px;">Tidak ada data penjualan pada rentang tanggal ini.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>

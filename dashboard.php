@@ -66,60 +66,65 @@
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px;">
-                    <div class="data-section" style="margin-top: 0; padding: 20px;">
-                        <div class="data-section-header" style="margin-bottom: 15px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; align-items: start;">
+                    
+                    <div class="data-section" style="margin-top: 0; padding: 20px; display: flex; flex-direction: column; height: 380px;">
+                        <div class="data-section-header" style="margin-bottom: 15px; flex-shrink: 0;">
                             <h3 style="font-size: 1.1rem; color: #333;"><i class="fas fa-history" style="margin-right: 8px; color: #c0a080;"></i> Transaksi Terakhir</h3>
                         </div>
-                        <table style="font-size: 0.9rem; box-shadow: none;">
-                            <thead>
-                                <tr style="background-color: #fcfcfc;">
-                                    <th style="padding: 10px;">Tanggal & Referensi</th>
-                                    <th style="padding: 10px; text-align: right;">Total Nilai</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="trx in transaksiTerbaru" :key="trx.ref">
-                                    <td style="padding: 10px;">
-                                        <strong>{{ trx.tanggal }}</strong><br>
-                                        <span style="font-size: 0.8rem; color: #888;">{{ trx.ref }}</span>
-                                    </td>
-                                    <td style="font-weight: bold; color: #2e7d32; text-align: right; padding: 10px;">
-                                        Rp {{ trx.total.toLocaleString('id-ID') }}
-                                    </td>
-                                </tr>
-                                <tr v-if="transaksiTerbaru.length === 0">
-                                    <td colspan="2" style="text-align: center; color: #888; padding: 15px;">Belum ada transaksi di rentang tanggal ini.</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div style="flex: 1; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; background: #fff;">
+                            <table style="font-size: 0.9rem; box-shadow: none; margin: 0; width: 100%; border-collapse: collapse;">
+                                <thead style="position: sticky; top: 0; z-index: 10; background-color: #fcfcfc; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                    <tr>
+                                        <th style="padding: 12px 15px; border-bottom: 1px solid #eee;">Tanggal & Referensi</th>
+                                        <th style="padding: 12px 15px; text-align: right; border-bottom: 1px solid #eee;">Total Nilai</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="trx in transaksiTerbaru" :key="trx.ref">
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #eee;">
+                                            <strong>{{ trx.tanggal }}</strong><br>
+                                            <span style="font-size: 0.8rem; color: #888;">{{ trx.ref }}</span>
+                                        </td>
+                                        <td style="font-weight: bold; color: #2e7d32; text-align: right; padding: 12px 15px; border-bottom: 1px solid #eee;">
+                                            Rp {{ trx.total.toLocaleString('id-ID') }}
+                                        </td>
+                                    </tr>
+                                    <tr v-if="transaksiTerbaru.length === 0">
+                                        <td colspan="2" style="text-align: center; color: #888; padding: 20px;">Belum ada transaksi di rentang tanggal ini.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
-                    <div class="data-section" style="margin-top: 0; padding: 20px;">
-                        <div class="data-section-header" style="margin-bottom: 15px;">
+                    <div class="data-section" style="margin-top: 0; padding: 20px; display: flex; flex-direction: column; height: 380px;">
+                        <div class="data-section-header" style="margin-bottom: 15px; flex-shrink: 0;">
                             <h3 style="font-size: 1.1rem; color: #333;"><i class="fas fa-exclamation-circle" style="margin-right: 8px; color: #d9534f;"></i> Peringatan Stok</h3>
                         </div>
-                        <table style="font-size: 0.9rem; box-shadow: none;">
-                            <thead>
-                                <tr style="background-color: #fcfcfc;">
-                                    <th style="padding: 10px;">Nama Produk</th>
-                                    <th style="padding: 10px; text-align: center;">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="item in barangMenipis" :key="item.kode">
-                                    <td style="padding: 10px;">{{ item.nama }}</td>
-                                    <td style="text-align: center; padding: 10px;">
-                                        <span class="status" :class="item.stok === 0 ? 'habis' : 'menipis'">
-                                            {{ item.stok === 0 ? 'Habis (0)' : `Menipis (${item.stok})` }}
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr v-if="barangMenipis.length === 0">
-                                    <td colspan="2" style="text-align: center; color: #888; padding: 15px;">Semua stok barang dalam kondisi aman (>10 pcs).</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div style="flex: 1; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; background: #fff;">
+                            <table style="font-size: 0.9rem; box-shadow: none; margin: 0; width: 100%; border-collapse: collapse;">
+                                <thead style="position: sticky; top: 0; z-index: 10; background-color: #fcfcfc; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                    <tr>
+                                        <th style="padding: 12px 15px; border-bottom: 1px solid #eee;">Nama Produk</th>
+                                        <th style="padding: 12px 15px; text-align: center; border-bottom: 1px solid #eee;">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="item in barangMenipis" :key="item.kode">
+                                        <td style="padding: 12px 15px; border-bottom: 1px solid #eee;">{{ item.nama }}</td>
+                                        <td style="text-align: center; padding: 12px 15px; border-bottom: 1px solid #eee;">
+                                            <span class="status" :class="item.stok === 0 ? 'habis' : 'menipis'">
+                                                {{ item.stok === 0 ? 'Habis (0)' : `Menipis (${item.stok})` }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr v-if="barangMenipis.length === 0">
+                                        <td colspan="2" style="text-align: center; color: #888; padding: 20px;">Semua stok barang dalam kondisi aman (>5 pcs).</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
