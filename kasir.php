@@ -130,11 +130,16 @@
                             <div style="margin-top: 15px;" v-if="metodePembayaran === 'Tunai'">
                                 <label style="font-size: 0.9rem; font-weight: 600; color: #555;">Input Tunai Pembeli (Rp)</label>
                                 <input type="number" v-model="uangTunai" class="input-tunai" style="width: 100%; padding: 10px 12px; margin-top: 5px; border: 1px solid #c0a080; border-radius: 6px; font-size: 1.1rem; text-align: right; font-weight: bold; background: #fff;" placeholder="0" min="0">
+                                
+                                <div v-if="uangTunai > 0 && uangTunai < totalBelanja" style="margin-top: 8px; padding: 8px 12px; background-color: #fef2f2; border: 1px solid #f87171; border-radius: 6px; color: #dc2626; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between;">
+                                    <span><i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i> Uang Tunai Kurang!</span>
+                                    <span>- Rp {{ (totalBelanja - uangTunai).toLocaleString('id-ID') }}</span>
+                                </div>
                             </div>
 
-                            <div class="checkout-row" style="margin-top: 15px; color: #2e7d32; font-size: 1.1rem; font-weight: 700;" v-if="metodePembayaran === 'Tunai' && uangTunai > 0">
+                            <div class="checkout-row" style="margin-top: 15px; color: #2e7d32; font-size: 1.1rem; font-weight: 700;" v-if="metodePembayaran === 'Tunai' && uangTunai >= totalBelanja">
                                 <span>Kembalian</span>
-                                <span>Rp {{ kembalian >= 0 ? kembalian.toLocaleString('id-ID') : 0 }}</span>
+                                <span>Rp {{ kembalian.toLocaleString('id-ID') }}</span>
                             </div>
 
                             <button class="btn-action success" style="width: 100%; margin-top: 20px; padding: 14px; font-size: 1.1rem; font-weight: bold; border-radius: 8px; box-shadow: 0 4px 6px rgba(46,125,50,0.2);" 
